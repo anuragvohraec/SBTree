@@ -6,8 +6,7 @@ async function remove(_query) {
   const self = this;
   const removeNestedProp = async function (_fieldName, _fieldValue, _remCmd) {
     const _fieldValueType = typeof _fieldValue;
-    console.log({_fieldName}, {_fieldValue})
-    if(['number','string','boolean'].includes(_fieldValueType)){
+    if(['number','string','boolean'].includes(_fieldValueType) || Array.isArray(_fieldValue)){
       const fieldNode = self.getFieldTree(_fieldName);
       await fieldNode.remove(_remCmd);
     }else{
@@ -32,8 +31,9 @@ async function remove(_query) {
       const _fieldValue =  remCmd.query[_fieldName];
       const _fieldValType = typeof _fieldValue;
 
-        if(['number','string','boolean'].includes(_fieldValType)){
+        if(['number','string','boolean'].includes(_fieldValType) || Array.isArray(_fieldValue)){
           const fieldNode = this.getFieldTree(_fieldName);
+
           await fieldNode.remove(remCmd);
         }else{
           if(_fieldValType==='object' && !Array.isArray(_fieldValue)){
